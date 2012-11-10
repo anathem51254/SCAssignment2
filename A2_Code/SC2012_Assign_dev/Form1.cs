@@ -13,6 +13,7 @@ namespace SC2012_Assign
     {
         bool initPb = true;
         Bitmap bm;
+        int printInfo = 0;
 
         public Form1()
         {
@@ -145,7 +146,7 @@ namespace SC2012_Assign
             p.movement(1);
             p.movement(0);
             drawPathInMaze(G.path);
- //           System.Windows.Forms.MessageBox.Show("Score is "+G.path
+ //          System.Windows.Forms.MessageBox.Show("Score is "+G.path
    //             );
         }
 
@@ -176,6 +177,8 @@ namespace SC2012_Assign
         {
             label2.Text = String.Format("Mutation Percent {0:00.00}", G.mutationPercent);
             label3.Text = String.Format("Mutations {0:D}", G.mutations);
+            label9.Text = String.Format("Duplicates {0:D}", G.dupNum);
+            label10.Text = String.Format("Weaklings {0:D}", G.weaklingNum);
             label4.Text = String.Format("Generation {0:D}", G.generation);
             label5.Text = String.Format("Best Score {0:D}", G.bestScore);
         }
@@ -188,11 +191,14 @@ namespace SC2012_Assign
             G.pop.setupPop();
             G.pop.scorePop();
             G.pop.findHighestScore();
+            G.pop.findLowestScore();
             drawHighScore();
             G.mutationPercent = double.Parse(textBox3.Text);
             G.generation=0;
             G.generations=int.Parse(textBox2.Text);
             G.mutations=0;
+            G.weaklingNum = 0;
+            G.dupNum = 0;
             drawVars();
 
         }
@@ -204,15 +210,22 @@ namespace SC2012_Assign
 
         public void run1Gen()
         {
+            int scoreDif = G.pop.findLowestScore() - G.pop.findHighestScore();
+            G.weaklingNum += G.pop.RemoveWeaklings( (G.pop.highScore - (-scoreDif / 3)) );
+
             // assumes that population has been scored
             for (int i = 0; i < G.pop.numInPop / 2; i++)
             {
-                int l = G.pop.findLowestScore();
+                //G.dupNum += G.pop.CheckDuplicates();
+                G.pop.findLowestScore();
+                int l = G.pop.lowScoreIndex;
                 int mom = G.pop.pickRandom();
                 int dad = G.pop.pickRandom();
                 G.pop.pp[l] = Genome.breed(G.pop.pp[mom], G.pop.pp[dad], G.mutationPercent);
+                
                 if (G.pop.pp[l].mutant) G.mutations++;
             }
+
             G.generation++;
             if (G.generation >= G.generations) G.run = false;
             G.pop.scorePop();
@@ -231,7 +244,7 @@ namespace SC2012_Assign
             {
                 t = t + G.pop.pp[i].asText(i)+"\n";
             }
-            textBox4.Text = t;
+            debugInfo.Text += t;
         }
 
         private void button7_Click(object sender, EventArgs e)

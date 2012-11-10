@@ -21,6 +21,8 @@ namespace SC2012_Assign
         public static int generation;
         public static int generations;
         public static int mutations;
+        public static int weaklingNum;
+        public static int dupNum;
         public static int bestScore;
 
         public static bool run = false;
