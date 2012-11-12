@@ -9,7 +9,7 @@ namespace SC2012_Assign
     {
         public const int lowValGene = 0;
         public const int highValGene = 3;
-        public const int genomeLen = 40;
+        public const int genomeLen = 100;
     }
 
     public class Gene
@@ -97,13 +97,12 @@ namespace SC2012_Assign
         {
             child.mutant = true;
 
-            int mutstrat = G.rnd.Next(1, 1);
+            int mutstrat = G.rnd.Next(3);
 
             switch(mutstrat)
             {
-
                 case 1:
-                    int i = G.rnd.Next(0, child.dnaSize);
+                    int i = G.rnd.Next(G.rnd.Next(10), child.dnaSize);
                     
                     for (int x = 0; x < i; x++)
                     {
@@ -112,11 +111,46 @@ namespace SC2012_Assign
                         int r = G.rnd.Next(0, child.dnaSize);
                         child.dna[r] = newGene;
                     }
-                break;
-
+                    break;
                 case 2:
 
-                break;
+                    int prevy;
+                    int y;
+
+                    for (int z = 0; z < 3; z++)
+                    {
+                        y = G.rnd.Next(0, child.dnaSize);
+                        prevy = y;
+
+                        if (prevy == y)
+                            continue;
+                        else
+                        {
+                            //for(int hh = 0; hh < 2; hh++)
+                            //{
+                                Gene newGene = new Gene();
+
+                                if (/*child.dna[y].gene == 0 ||*/ child.dna[y].gene == 2)
+                                {
+                                    //int temp = G.rnd.Next(0, 1);
+
+                                    //if (temp == 0)
+                                    //{
+                                        newGene.gene = 0;
+                                        child.dna[y] = newGene;
+                                    //}
+                                    //else if (temp == 1)
+                                    //{
+                                       // newGene.gene = 0;
+                                       // child.dna[y] = newGene;
+                                    //}
+                                }
+
+                            //}
+                        }
+
+                    }
+                    break;
             }
 
             return child;
@@ -131,7 +165,7 @@ namespace SC2012_Assign
         {
             PathInMaze p = new PathInMaze(m);
            
-            score = 1000;
+            score = 100000;
             int path = 0;
             int wall = 0;
             for (int i = 0; i < AssignAnswer.genomeLen; i++)
@@ -146,7 +180,7 @@ namespace SC2012_Assign
                 // 5= turn right
                 // 6= turn left
                 // 7= about face (turn right twice)
-
+                    
                 //if (mi == -1) break; // perhaps use -1 to indicate at end
                 int rc = p.movement(mi);
 
@@ -161,37 +195,37 @@ namespace SC2012_Assign
                 if (rc == PathInMaze.resSucessEnd)
                 {
                     foundEnd = true;
-                    score = score + 100;
+                    score = score + 10000;
                     break;
                 }
 
                 if (rc == PathInMaze.resSucessTurn)
                 {
-                    score = score + 5;
+                    score = score + 800;
                     continue;
                 }
 
                 if (rc == PathInMaze.resFailOverPath)
                 {
-                    score = score - 5;
+                    score = score - 2000;
                     path++;
                     if ( (path % 4) == 0)
-                        score = score - 5;
+                        score = score - 5000;
                     continue;
                 }
 
                 if (rc == PathInMaze.resSucess)
                 {
-                    score = score + 5;
+                    score = score + 800;
                     continue;
                 }
 
                 if (rc == PathInMaze.resFailOut || rc == PathInMaze.resFailWall)
                 {
-                    score = score - 10;
+                    score = score - 800;
                     wall++;
-                    if ((wall % 2) == 0)
-                        score = score - 10;
+                    if ((wall % 4) == 0)
+                        score = score - 1500;
                     continue;
                 }
 
@@ -209,9 +243,9 @@ namespace SC2012_Assign
             int _manhattanDis = dx + dy;
 
             if (_manhattanDis < manhattanDis)
-                score += 3;
+                score += 1500;
             else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
-                score -= 3;
+                score -= 1500;
 
             manhattanDis = _manhattanDis;
 
@@ -256,7 +290,7 @@ namespace SC2012_Assign
             int cnt = 0;
             for (int index = 0; index < numInPop; index++)
             {
-                if (pp[index].score < midscore * 1)
+                if (pp[index].score < (midscore * 1) )
                 {
                     pp[index].RandomGenome();
                     cnt++;

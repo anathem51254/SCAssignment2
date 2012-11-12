@@ -261,5 +261,10 @@ namespace SC2012_Assign
                 run1Gen();
             }
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
