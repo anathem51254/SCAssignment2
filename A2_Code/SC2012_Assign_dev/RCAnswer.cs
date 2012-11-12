@@ -9,7 +9,7 @@ namespace SC2012_Assign
     {
         public const int lowValGene = 0;
         public const int highValGene = 3;
-        public const int genomeLen = 100;
+        public const int genomeLen = 75;
     }
 
     public class Gene
@@ -97,7 +97,7 @@ namespace SC2012_Assign
         {
             child.mutant = true;
 
-            int mutstrat = G.rnd.Next(3);
+            int mutstrat = 1;//G.rnd.Next(3);
 
             switch(mutstrat)
             {
@@ -207,7 +207,7 @@ namespace SC2012_Assign
 
                 if (rc == PathInMaze.resFailOverPath)
                 {
-                    score = score - 2000;
+                    score = score - 3000;
                     path++;
                     if ( (path % 4) == 0)
                         score = score - 5000;
@@ -243,9 +243,9 @@ namespace SC2012_Assign
             int _manhattanDis = dx + dy;
 
             if (_manhattanDis < manhattanDis)
-                score += 1500;
+                score += 2000;
             else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
-                score -= 1500;
+                score -= 2000;
 
             manhattanDis = _manhattanDis;
 
