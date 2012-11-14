@@ -209,24 +209,24 @@ namespace SC2012_Assign
                     score = score + 800;
 
                     if (_manhattanDis < manhattanDis)
-                        score += 1000;
+                        score += 1200;
                     else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
-                        score -= 500;
+                        score -= 800;
                     
                     continue;
                 }
 
                 if (rc == PathInMaze.resFailOverPath)
                 {
-                    score = score - 1500;
+                    score = score - 2000;
                     //path++;
                     //if ( (path % 4) == 0)
                     //    score = score - 5000;
 
                     if (_manhattanDis < manhattanDis)
-                        score += 1000;
+                        score += 1200;
                     else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
-                        score -= 500;
+                        score -= 800;
 
                     continue;
                 }
@@ -236,9 +236,9 @@ namespace SC2012_Assign
                     score = score + 800;
 
                     if (_manhattanDis < manhattanDis)
-                        score += 1000;
+                        score += 1200;
                     else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
-                        score -= 500;
+                        score -= 800;
 
                     continue;
                 }
@@ -251,9 +251,9 @@ namespace SC2012_Assign
                     //    score = score - 1500;
 
                     if (_manhattanDis < manhattanDis)
-                        score += 1000;
+                        score += 1200;
                     else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
-                        score -= 500;
+                        score -= 800;
 
                     continue;
                 }
