@@ -9,7 +9,7 @@ namespace SC2012_Assign
     {
         public const int lowValGene = 0;
         public const int highValGene = 3;
-        public const int genomeLen = 75;
+        public const int genomeLen = 95;
     }
 
     public class Gene
@@ -192,40 +192,69 @@ namespace SC2012_Assign
                 // resFailOverPath = fail moved over previous path (but it did move)
                 // resInvalid = not a valid action - fail
 
+                int dx = Math.Abs(p.curX - p.mazz.endPosx);
+                int dy = Math.Abs(p.curY - p.mazz.endPosy);
+
+                int _manhattanDis = dx + dy;
+
                 if (rc == PathInMaze.resSucessEnd)
                 {
                     foundEnd = true;
-                    score = score + 10000;
+                    score = score + 100000;
                     break;
                 }
 
                 if (rc == PathInMaze.resSucessTurn)
                 {
                     score = score + 800;
+
+                    if (_manhattanDis < manhattanDis)
+                        score += 1000;
+                    else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
+                        score -= 500;
+                    
                     continue;
                 }
 
                 if (rc == PathInMaze.resFailOverPath)
                 {
-                    score = score - 3000;
-                    path++;
-                    if ( (path % 4) == 0)
-                        score = score - 5000;
+                    score = score - 1500;
+                    //path++;
+                    //if ( (path % 4) == 0)
+                    //    score = score - 5000;
+
+                    if (_manhattanDis < manhattanDis)
+                        score += 1000;
+                    else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
+                        score -= 500;
+
                     continue;
                 }
 
                 if (rc == PathInMaze.resSucess)
                 {
                     score = score + 800;
+
+                    if (_manhattanDis < manhattanDis)
+                        score += 1000;
+                    else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
+                        score -= 500;
+
                     continue;
                 }
 
                 if (rc == PathInMaze.resFailOut || rc == PathInMaze.resFailWall)
                 {
                     score = score - 800;
-                    wall++;
-                    if ((wall % 4) == 0)
-                        score = score - 1500;
+                    //wall++;
+                    //if ((wall % 4) == 0)
+                    //    score = score - 1500;
+
+                    if (_manhattanDis < manhattanDis)
+                        score += 1000;
+                    else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
+                        score -= 500;
+
                     continue;
                 }
 
@@ -234,20 +263,8 @@ namespace SC2012_Assign
                     System.Windows.Forms.MessageBox.Show("Invalid Movement");
                     continue;
                 }
+                manhattanDis = _manhattanDis;
             }
-
-
-            int dx = Math.Abs(p.curX - p.mazz.endPosx);
-            int dy = Math.Abs(p.curY - p.mazz.endPosy);
-
-            int _manhattanDis = dx + dy;
-
-            if (_manhattanDis < manhattanDis)
-                score += 2000;
-            else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
-                score -= 2000;
-
-            manhattanDis = _manhattanDis;
 
             return p;
         }

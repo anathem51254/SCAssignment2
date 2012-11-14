@@ -211,7 +211,7 @@ namespace SC2012_Assign
         public void run1Gen()
         {
             int scoreDif = G.pop.findLowestScore() - G.pop.findHighestScore();
-            G.weaklingNum += G.pop.RemoveWeaklings( (G.pop.highScore - (-scoreDif / 3)) );
+            G.weaklingNum += G.pop.RemoveWeaklings( (G.pop.highScore - (-scoreDif / 2)) );
 
             // assumes that population has been scored
             for (int i = 0; i < G.pop.numInPop / 2; i++)
