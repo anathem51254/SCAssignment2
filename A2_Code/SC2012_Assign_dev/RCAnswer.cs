@@ -5,13 +5,6 @@ using System.Text;
 
 namespace SC2012_Assign
 {
-    class AssignAnswer
-    {
-        public const int lowValGene = 0;
-        public const int highValGene = 3;
-        public const int genomeLen = 95;
-    }
-
     public class Gene
     {
         private const int GENEVARIETY = 4;
@@ -31,13 +24,13 @@ namespace SC2012_Assign
 
     public class Genome
     {
-        public int dnaSize;
         public int score;
         public int manhattanDis;
+        public int manhattanDis2;
         public bool mutant = false; // handy for mutation count set to true if the gene is mutated
         public bool foundEnd = false; // needed to early exit must be set when score is set
 
-        public List<Gene> dna;
+        public Gene[] dna;
 
         public Genome()
         {
@@ -45,24 +38,24 @@ namespace SC2012_Assign
 
         public void BlankGenome()
         {
-            dna = new List<Gene>();
-            dnaSize = AssignAnswer.genomeLen;
-            score = -1;
+            dna = new Gene[G.genomeLen];
+            for (int i = 0; i < G.genomeLen; i++)
+            {
+                dna[i] = new Gene();
+            }
+            score = -999999;
         }
 
         public void RandomGenome()
         {
-            dna = new List<Gene>();
-
-            for (int i = 0; i < AssignAnswer.genomeLen; i++)
+            dna = new Gene[G.genomeLen];
+            for (int i = 0; i < G.genomeLen; i++)
             {
                 Gene newGene = new Gene();
                 newGene.RandomGenes();
-                dna.Add(newGene);
+                dna[i] = newGene;
             }
-
-            dnaSize = AssignAnswer.genomeLen;
-            score = -1;
+            score = -999999;
         }
 
         public static Genome breed(Genome mum, Genome dad, double mutationPercent)
@@ -70,16 +63,16 @@ namespace SC2012_Assign
             Genome child = new Genome();
             child.BlankGenome();
 
-            int coPoint = G.rnd.Next(0, mum.dnaSize);
+            int coPoint = G.rnd.Next(0, G.genomeLen);
 
             for (int i = 0; i < coPoint; i++)
             {
-                child.dna.Add(mum.GetGene(i));
+                child.dna[i] = mum.GetGene(i);
             }
 
-            for( int i = coPoint; i < dad.dnaSize; i++)
+            for (int i = coPoint; i < G.genomeLen; i++)
             {
-                child.dna.Add(dad.GetGene(i));
+                child.dna[i] = dad.GetGene(i);
             }
 
             if (G.rnd.NextDouble() * 100 < mutationPercent) 
@@ -88,9 +81,9 @@ namespace SC2012_Assign
             return child;
         }
 
-        public string asText(int j)
+        public Gene GetGene(int i)
         {
-            return G.pop.pp[j].score.ToString();
+            return dna[i];
         }
 
         public Genome Mutate(Genome child)
@@ -102,75 +95,70 @@ namespace SC2012_Assign
             switch(mutstrat)
             {
                 case 1:
-                    int i = G.rnd.Next(G.rnd.Next(10), child.dnaSize);
-                    
+                    int i = G.rnd.Next(G.rnd.Next(10), G.genomeLen);
+
                     for (int x = 0; x < i; x++)
                     {
                         Gene newGene = new Gene();
                         newGene.RandomGenes();
-                        int r = G.rnd.Next(0, child.dnaSize);
+                        int r = G.rnd.Next(0, G.genomeLen);
                         child.dna[r] = newGene;
                     }
                     break;
                 case 2:
-
-                    int prevy;
-                    int y;
-
-                    for (int z = 0; z < 3; z++)
-                    {
-                        y = G.rnd.Next(0, child.dnaSize);
-                        prevy = y;
-
-                        if (prevy == y)
-                            continue;
-                        else
-                        {
-                            //for(int hh = 0; hh < 2; hh++)
-                            //{
-                                Gene newGene = new Gene();
-
-                                if (/*child.dna[y].gene == 0 ||*/ child.dna[y].gene == 2)
-                                {
-                                    //int temp = G.rnd.Next(0, 1);
-
-                                    //if (temp == 0)
-                                    //{
-                                        newGene.gene = 0;
-                                        child.dna[y] = newGene;
-                                    //}
-                                    //else if (temp == 1)
-                                    //{
-                                       // newGene.gene = 0;
-                                       // child.dna[y] = newGene;
-                                    //}
-                                }
-
-                            //}
-                        }
-
-                    }
+                    MutStrat2();
                     break;
             }
 
             return child;
         }
 
-        public Gene GetGene(int i)
+        private void MutStrat1()
         {
-            return dna[i];
+            int i = G.rnd.Next(G.rnd.Next(10), G.genomeLen);
+
+            for (int x = 0; x < i; x++)
+            {
+                Gene newGene = new Gene();
+                newGene.RandomGenes();
+                int r = G.rnd.Next(0, G.genomeLen);
+                dna[r] = newGene;
+            }
+        }
+
+        private void MutStrat2()
+        {
+            int prevy;
+            int y;
+
+            for (int z = 0; z < 3; z++)
+            {
+                y = G.rnd.Next(0, G.genomeLen);
+                prevy = y;
+
+                if (prevy == y)
+                    continue;
+                else
+                {
+                    Gene newGene = new Gene();
+                    if (dna[y].gene == 2)
+                    {
+                        newGene.gene = 0;
+                        dna[y] = newGene;
+                    }
+                }
+            }
         }
 
         public PathInMaze calcScore(Maze m)
         {
             PathInMaze p = new PathInMaze(m);
            
-            score = 100000;
-            int path = 0;
-            int wall = 0;
-            for (int i = 0; i < AssignAnswer.genomeLen; i++)
+            score = 500;
+
+            for (int i = 0; i < G.genomeLen; i++)
             {
-                int mi = dna.ElementAt(i).gene;
+                int mi = dna[i].gene;
 
                 // 0= Move Right(x+)
                 // 1= Move Down(y+)
@@ -192,68 +180,59 @@ namespace SC2012_Assign
                 // resFailOverPath = fail moved over previous path (but it did move)
                 // resInvalid = not a valid action - fail
 
-                int dx = Math.Abs(p.curX - p.mazz.endPosx);
-                int dy = Math.Abs(p.curY - p.mazz.endPosy);
-
-                int _manhattanDis = dx + dy;
+                int _manhattanDis = calcDistance(p);
 
                 if (rc == PathInMaze.resSucessEnd)
                 {
                     foundEnd = true;
-                    score = score + 100000;
+                    score = score + 1000;
                     break;
                 }
 
                 if (rc == PathInMaze.resSucessTurn)
                 {
-                    score = score + 800;
+                    score = score + 8;
 
                     if (_manhattanDis < manhattanDis)
-                        score += 1200;
-                    else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
-                        score -= 800;
+                        score += 2;
+                    else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
+                        score -= 2;
                     
                     continue;
                 }
 
                 if (rc == PathInMaze.resFailOverPath)
                 {
-                    score = score - 2000;
-                    //path++;
-                    //if ( (path % 4) == 0)
-                    //    score = score - 5000;
+                    score = score - 20;
 
                     if (_manhattanDis < manhattanDis)
-                        score += 1200;
-                    else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
-                        score -= 800;
+                        score += 2;
+                    else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
+                        score -= 2;
 
                     continue;
                 }
 
                 if (rc == PathInMaze.resSucess)
                 {
-                    score = score + 800;
+                    score = score + 8;
 
                     if (_manhattanDis < manhattanDis)
-                        score += 1200;
-                    else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
-                        score -= 800;
+                        score += 2;
+                    else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
+                        score -= 2;
 
                     continue;
                 }
 
                 if (rc == PathInMaze.resFailOut || rc == PathInMaze.resFailWall)
                 {
-                    score = score - 800;
-                    //wall++;
-                    //if ((wall % 4) == 0)
-                    //    score = score - 1500;
+                    score = score - 8;
 
                     if (_manhattanDis < manhattanDis)
-                        score += 1200;
-                    else if (_manhattanDis > manhattanDis/* || _manhattanDis == manhattanDis*/)
-                        score -= 800;
+                        score += 2;
+                    else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
+                        score -= 2;
 
                     continue;
                 }
@@ -266,9 +245,23 @@ namespace SC2012_Assign
                 manhattanDis = _manhattanDis;
             }
 
+            int _manhattanDis2 = calcDistance(p);
+
+            if (_manhattanDis2 < manhattanDis2)
+                score += 15;
+            else if (_manhattanDis2 > manhattanDis2 || _manhattanDis2 == manhattanDis2)
+                score -= 15;
+
             return p;
         }
-    }
+
+        private int calcDistance(PathInMaze p)
+        {
+            int dx = Math.Abs(p.curX - p.mazz.endPosx);
+            int dy = Math.Abs(p.curY - p.mazz.endPosy);
+            return (dx + dy);
+        }
+    } 
 
     public class Population
     {
@@ -316,6 +309,7 @@ namespace SC2012_Assign
             return cnt;
         }
 
+        // not used
         public int CheckDuplicates()
         {
             int cnt = 0;
@@ -324,7 +318,7 @@ namespace SC2012_Assign
                 for (int x = 0; x < numInPop; x++)
                 {
                     int gg = 1;
-                    for (int f = 0; f < AssignAnswer.genomeLen; f++)
+                    for (int f = 0; f < G.genomeLen; f++)
                     {
 
                         Gene temp1 = pp[i].GetGene(f);
@@ -368,13 +362,13 @@ namespace SC2012_Assign
         public int findLowestScore()
         {
             //ignores scores of -1
-            int k = -1;
+            int k = -999999;
             int j=9999999;
             for (int i = 0; i < numInPop; i++)
             {
                 if (k == -1)
                 {
-                    if (pp[i].score != -1)
+                    if (pp[i].score != -999999)
                     {
                         k = i;
                         j = pp[i].score;
@@ -399,7 +393,7 @@ namespace SC2012_Assign
             for (int i = 0; i < numInPop * 3; i++)
             {
                 int k = G.rnd.Next(0, G.pop.numInPop);
-                if (pp[k].score == -1) continue;
+                if (pp[k].score == -999999) continue;
                 {
                     return k;
                 }
@@ -408,7 +402,7 @@ namespace SC2012_Assign
             for (int i = 0; i < numInPop ; i++)
             {
                 int k = i;
-                if (pp[k].score == -1) continue;
+                if (pp[k].score == -999999) continue;
                 {
                     return k;
                 }

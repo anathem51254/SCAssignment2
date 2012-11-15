@@ -18,6 +18,7 @@ namespace SC2012_Assign
         public static Population pop;
 
         public static double mutationPercent;
+        public static int genomeLen;
         public static int generation;
         public static int generations;
         public static int mutations;

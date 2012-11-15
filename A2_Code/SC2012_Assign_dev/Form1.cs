@@ -13,7 +13,6 @@ namespace SC2012_Assign
     {
         bool initPb = true;
         Bitmap bm;
-        int printInfo = 0;
 
         public Form1()
         {
@@ -23,16 +22,6 @@ namespace SC2012_Assign
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            // create and draw maze
-            if (initPb) 
-            {
-                createAndDrawMaze();
-            }
-            else drawMaze(G.maze);
         }
 
         public void createAndDrawMaze()
@@ -126,44 +115,6 @@ namespace SC2012_Assign
             pictureBox1.Refresh();
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            PathInMaze p = new PathInMaze(G.maze);
-            G.path = p;
-            p.movement(0);
-            p.movement(1);
-            p.movement(0);
-            p.movement(1);
-            p.movement(0);
-            p.movement(1);
-            p.movement(0);
-            p.movement(1);
-            p.movement(0);
-            p.movement(1);
-            p.movement(0);
-            p.movement(1);
-            p.movement(0);
-            p.movement(1);
-            p.movement(0);
-            drawPathInMaze(G.path);
- //          System.Windows.Forms.MessageBox.Show("Score is "+G.path
-   //             );
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            Genome g = new Genome();
-            //g.init(30);
-            //
-            // ...
-            //
-            
-            G.path = g.calcScore(G.maze);
-            drawMaze(G.maze);
-            drawPathInMaze(G.path);
-            label1.Text = String.Format("{0:00000}", g.score);
-        }
-
         public void drawHighScore()
         {
             drawMaze(G.maze);
@@ -177,7 +128,7 @@ namespace SC2012_Assign
         {
             label2.Text = String.Format("Mutation Percent {0:00.00}", G.mutationPercent);
             label3.Text = String.Format("Mutations {0:D}", G.mutations);
-            label9.Text = String.Format("Duplicates {0:D}", G.dupNum);
+            //label9.Text = String.Format("Duplicates {0:D}", G.dupNum);
             label10.Text = String.Format("Weaklings {0:D}", G.weaklingNum);
             label4.Text = String.Format("Generation {0:D}", G.generation);
             label5.Text = String.Format("Best Score {0:D}", G.bestScore);
@@ -185,6 +136,7 @@ namespace SC2012_Assign
 
         private void button5_Click(object sender, EventArgs e)
         {
+            G.genomeLen = int.Parse(genLenTxtBox.Text);
             G.rnd = new Random();
             createAndDrawMaze();
             G.pop = new Population(int.Parse(textBox1.Text));
@@ -235,16 +187,6 @@ namespace SC2012_Assign
             drawHighScore();
             drawVars();
             Application.DoEvents();
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            string t = "";
-            for (int i = 0; i < G.pop.numInPop; i++)
-            {
-                t = t + G.pop.pp[i].asText(i)+"\n";
-            }
-            debugInfo.Text += t;
         }
 
         private void button7_Click(object sender, EventArgs e)
