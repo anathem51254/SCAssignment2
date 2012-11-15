@@ -48,6 +48,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.genLenTxtBox = new System.Windows.Forms.TextBox();
             this.genLenLbl = new System.Windows.Forms.Label();
+            this.InfoBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -100,7 +103,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(340, 51);
+            this.label4.Location = new System.Drawing.Point(591, 25);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 9;
@@ -109,7 +112,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(340, 64);
+            this.label5.Location = new System.Drawing.Point(456, 12);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(35, 13);
             this.label5.TabIndex = 10;
@@ -121,7 +124,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(57, 20);
             this.textBox1.TabIndex = 11;
-            this.textBox1.Text = "50";
+            this.textBox1.Text = "200";
             // 
             // button6
             // 
@@ -167,7 +170,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(57, 20);
             this.textBox2.TabIndex = 15;
-            this.textBox2.Text = "400";
+            this.textBox2.Text = "2000";
             // 
             // comboBox1
             // 
@@ -176,7 +179,9 @@
             "Maze0",
             "Maze1",
             "Maze2",
-            "Maze3"});
+            "Maze3",
+            "Maze4",
+            "Maze5"});
             this.comboBox1.Location = new System.Drawing.Point(93, 43);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(74, 21);
@@ -189,7 +194,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(57, 20);
             this.textBox3.TabIndex = 17;
-            this.textBox3.Text = "3";
+            this.textBox3.Text = "0.5";
             // 
             // label8
             // 
@@ -238,11 +243,41 @@
             this.genLenLbl.TabIndex = 25;
             this.genLenLbl.Text = "Genome Len";
             // 
+            // InfoBox
+            // 
+            this.InfoBox.Location = new System.Drawing.Point(677, 80);
+            this.InfoBox.Multiline = true;
+            this.InfoBox.Name = "InfoBox";
+            this.InfoBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.InfoBox.Size = new System.Drawing.Size(329, 409);
+            this.InfoBox.TabIndex = 26;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(456, 25);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 27;
+            this.label1.Text = "label1";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(456, 38);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(35, 13);
+            this.label9.TabIndex = 28;
+            this.label9.Text = "label9";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1041, 547);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.InfoBox);
             this.Controls.Add(this.genLenLbl);
             this.Controls.Add(this.genLenTxtBox);
             this.Controls.Add(this.label10);
@@ -294,6 +329,9 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox genLenTxtBox;
         private System.Windows.Forms.Label genLenLbl;
+        private System.Windows.Forms.TextBox InfoBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label9;
     }
 }
 

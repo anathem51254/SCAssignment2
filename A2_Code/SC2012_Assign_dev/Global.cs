@@ -25,6 +25,8 @@ namespace SC2012_Assign
         public static int weaklingNum;
         public static int dupNum;
         public static int bestScore;
+        public static int midScore;
+        public static int lowScore;
 
         public static bool run = false;
         public static bool stopWhenPathFound;
@@ -263,6 +265,8 @@ namespace SC2012_Assign
             if (mazeStyle == "Maze1") setMaze1();
             if (mazeStyle == "Maze2") setMaze2();
             if (mazeStyle == "Maze3") setMaze3();
+            if (mazeStyle == "Maze4") setMaze4();
+            if (mazeStyle == "Maze5") setMaze5();
         }
 
         public void setMaze0() // the default maze
@@ -333,7 +337,50 @@ namespace SC2012_Assign
 
         }
 
+        public void setMaze4() // the default maze
+        {
+            allocateMaze(20, 15);
+            for (int y = 0; y < 6; y++)
+            {
+                blocks[1, y] = terImpassable;
+                blocks[3, y + 3] = terImpassable;
+                blocks[9, y + 3] = terImpassable;
+                blocks[7, y] = terImpassable;
+                blocks[9, y + 1] = terImpassable;
+                blocks[18, y + 9] = terImpassable;
+                blocks[15, y + 9] = terImpassable;
+                blocks[y + 10, 4] = terImpassable;
+                blocks[y + 8, 6] = terImpassable;
+            }
+            blocks[7, 6] = terImpassable;
+            blocks[4, 5] = terImpassable;
+            setStart(0, 3);
+            setEnd(16, 13);
 
+        }
+
+        public void setMaze5() // the default maze
+        {
+            allocateMaze(25, 20);
+            for (int y = 0; y < 6; y++)
+            {
+                blocks[1, y] = terImpassable;
+                blocks[3, y + 3] = terImpassable;
+                blocks[9, y + 3] = terImpassable;
+                blocks[7, y] = terImpassable;
+                blocks[9, y + 1] = terImpassable;
+                blocks[18, y + 9] = terImpassable;
+                blocks[y + 10, 4] = terImpassable;
+                blocks[y + 8, 6] = terImpassable;
+                blocks[y + 16, 10] = terImpassable;
+                blocks[y + 16, 14] = terImpassable;
+            }
+            blocks[7, 6] = terImpassable;
+            blocks[4, 5] = terImpassable;
+            setStart(0, 3);
+            setEnd(19, 11);
+
+        }
 
         public void allocateMaze(int Xsize, int Ysize)
         {

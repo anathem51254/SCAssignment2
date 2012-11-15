@@ -25,8 +25,8 @@ namespace SC2012_Assign
     public class Genome
     {
         public int score;
-        public int manhattanDis;
-        public int manhattanDis2;
+        public int manhattanDisMov;
+        public int manhattanDisPoi;
         public bool mutant = false; // handy for mutation count set to true if the gene is mutated
         public bool foundEnd = false; // needed to early exit must be set when score is set
 
@@ -90,20 +90,12 @@ namespace SC2012_Assign
         {
             child.mutant = true;
 
-            int mutstrat = 1;//G.rnd.Next(3);
+            int mutstrat = G.rnd.Next(1, 3);
 
             switch(mutstrat)
             {
                 case 1:
-                    int i = G.rnd.Next(G.rnd.Next(10), G.genomeLen);
-
-                    for (int x = 0; x < i; x++)
-                    {
-                        Gene newGene = new Gene();
-                        newGene.RandomGenes();
-                        int r = G.rnd.Next(0, G.genomeLen);
-                        child.dna[r] = newGene;
-                    }
+                    MutStrat1();
                     break;
                 case 2:
                     MutStrat2();
@@ -115,7 +107,7 @@ namespace SC2012_Assign
 
         private void MutStrat1()
         {
-            int i = G.rnd.Next(G.rnd.Next(10), G.genomeLen);
+            int i = G.rnd.Next((G.rnd.Next(6) + G.rnd.Next(6)));
 
             for (int x = 0; x < i; x++)
             {
@@ -128,25 +120,26 @@ namespace SC2012_Assign
 
         private void MutStrat2()
         {
-            int prevy;
-            int y;
+            int lpoint = G.rnd.Next(1, 15);
+            if (lpoint == 1)
+                lpoint += 3;
+            if (lpoint == 2)
+                lpoint += 2;
+            if (lpoint == 3)
+                lpoint += 1;
 
-            for (int z = 0; z < 3; z++)
+            int movDec = G.rnd.Next(4);
+
+            for (int fpoint = lpoint - 2; fpoint < lpoint; fpoint++)
             {
-                y = G.rnd.Next(0, G.genomeLen);
-                prevy = y;
-
-                if (prevy == y)
-                    continue;
-                else
-                {
-                    Gene newGene = new Gene();
-                    if (dna[y].gene == 2)
-                    {
-                        newGene.gene = 0;
-                        dna[y] = newGene;
-                    }
-                }
+                if (movDec == 0)
+                    dna[fpoint].gene = 0;
+                if (movDec == 1)
+                    dna[fpoint].gene = 1;
+                if (movDec == 2)
+                    dna[fpoint].gene = 2;
+                if (movDec == 3)
+                    dna[fpoint].gene = 3;
             }
         }
 
@@ -154,12 +147,16 @@ namespace SC2012_Assign
         {
             PathInMaze p = new PathInMaze(m);
            
-            score = 500;
+            score = 5000;
+
+            int _manhattanDisPoi = calcDistance(p);
+
+            int prevmi = 0;
 
             for (int i = 0; i < G.genomeLen; i++)
             {
                 int mi = dna[i].gene;
-
+                prevmi = mi;
                 // 0= Move Right(x+)
                 // 1= Move Down(y+)
                 // 2= Move Left(x+)
@@ -168,6 +165,15 @@ namespace SC2012_Assign
                 // 5= turn right
                 // 6= turn left
                 // 7= about face (turn right twice)
+                ////
+                //if (mi == 0 && prevmi == 0 ||
+                //    mi == 1 && prevmi == 1 ||
+                //    mi == 2 && prevmi == 2 ||
+                //    mi == 0 && prevmi == 0)
+                //    score += 5;
+                //else
+                //    score -= 5;
+
                     
                 //if (mi == -1) break; // perhaps use -1 to indicate at end
                 int rc = p.movement(mi);
@@ -180,34 +186,25 @@ namespace SC2012_Assign
                 // resFailOverPath = fail moved over previous path (but it did move)
                 // resInvalid = not a valid action - fail
 
-                int _manhattanDis = calcDistance(p);
+                int _manhattanDisMov = calcDistance(p);
+                
 
                 if (rc == PathInMaze.resSucessEnd)
                 {
                     foundEnd = true;
-                    score = score + 1000;
+                    score = score * 20;
                     break;
-                }
-
-                if (rc == PathInMaze.resSucessTurn)
-                {
-                    score = score + 8;
-
-                    if (_manhattanDis < manhattanDis)
-                        score += 2;
-                    else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
-                        score -= 2;
-                    
-                    continue;
                 }
 
                 if (rc == PathInMaze.resFailOverPath)
                 {
-                    score = score - 20;
+                    score = score - 30;
 
-                    if (_manhattanDis < manhattanDis)
-                        score += 2;
-                    else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
+                    if (_manhattanDisMov < manhattanDisMov)
+                        score += 20;
+                    else if (_manhattanDisMov > manhattanDisMov)
+                        score -= 20;
+                    else if (_manhattanDisMov == manhattanDisMov)
                         score -= 2;
 
                     continue;
@@ -215,23 +212,41 @@ namespace SC2012_Assign
 
                 if (rc == PathInMaze.resSucess)
                 {
-                    score = score + 8;
+                    score = score + 2;
 
-                    if (_manhattanDis < manhattanDis)
-                        score += 2;
-                    else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
+                    if (_manhattanDisMov < manhattanDisMov)
+                        score += 20;
+                    else if (_manhattanDisMov > manhattanDisMov)
+                        score -= 20;
+                    else if (_manhattanDisMov == manhattanDisMov)
+                        score -= 3;
+
+                    continue;
+                }
+
+                if (rc == PathInMaze.resFailWall)
+                {
+                    score = score - 3;
+
+                    if (_manhattanDisMov < manhattanDisMov)
+                        score += 20;
+                    else if (_manhattanDisMov > manhattanDisMov)
+                        score -= 20;
+                    else if (_manhattanDisMov == manhattanDisMov)
                         score -= 2;
 
                     continue;
                 }
 
-                if (rc == PathInMaze.resFailOut || rc == PathInMaze.resFailWall)
+                if (rc == PathInMaze.resFailOut)
                 {
-                    score = score - 8;
+                    score = score - 2;
 
-                    if (_manhattanDis < manhattanDis)
-                        score += 2;
-                    else if (_manhattanDis > manhattanDis || _manhattanDis == manhattanDis)
+                    if (_manhattanDisMov < manhattanDisMov)
+                        score += 20;
+                    else if (_manhattanDisMov > manhattanDisMov)
+                        score -= 20;
+                    else if (_manhattanDisMov == manhattanDisMov)
                         score -= 2;
 
                     continue;
@@ -242,15 +257,26 @@ namespace SC2012_Assign
                     System.Windows.Forms.MessageBox.Show("Invalid Movement");
                     continue;
                 }
-                manhattanDis = _manhattanDis;
+
+                if (rc == PathInMaze.resSucessTurn)
+                {
+                    score = score + 3;
+
+                    if (_manhattanDisMov < manhattanDisMov)
+                        score += 20;
+                    else if (_manhattanDisMov > manhattanDisMov || _manhattanDisMov == manhattanDisMov)
+                        score -= 20;
+
+                    continue;
+                }
             }
 
-            int _manhattanDis2 = calcDistance(p);
-
-            if (_manhattanDis2 < manhattanDis2)
-                score += 15;
-            else if (_manhattanDis2 > manhattanDis2 || _manhattanDis2 == manhattanDis2)
-                score -= 15;
+            //if (_manhattanDisPoi < manhattanDisPoi)
+            //   score += 15;
+            //else if (_manhattanDisPoi > manhattanDisPoi)
+            //   score -= 15;
+            //else if (_manhattanDisPoi == manhattanDisPoi)
+            //   score -= 5;
 
             return p;
         }
@@ -269,6 +295,8 @@ namespace SC2012_Assign
         public int numInPop;
         public int highScore;
         public int highScoreIndex;
+        public int midScore;
+        public int scoreDif;
         public int lowScore;
         public int lowScoreIndex;
 
@@ -295,13 +323,14 @@ namespace SC2012_Assign
             }
         }
 
-        public int RemoveWeaklings(int midscore)
+        public int RemoveWeaklings()
         {
             int cnt = 0;
             for (int index = 0; index < numInPop; index++)
             {
-                if (pp[index].score < (midscore * 1) )
+                if (pp[index].score < (midScore + (scoreDif / 4)) )
                 {
+                    System.Diagnostics.Debug.WriteLine(pp[index].score.ToString());
                     pp[index].RandomGenome();
                     cnt++;
                 }
@@ -363,7 +392,7 @@ namespace SC2012_Assign
         {
             //ignores scores of -1
             int k = -999999;
-            int j=9999999;
+            int j = 9999999;
             for (int i = 0; i < numInPop; i++)
             {
                 if (k == -1)
@@ -384,6 +413,15 @@ namespace SC2012_Assign
             lowScore = j;
             lowScoreIndex = k;
             return j;
+        }
+
+        public int findMidScore()
+        {
+            scoreDif = (-findLowestScore() - -findHighestScore());
+
+            midScore = highScore - scoreDif / 2; 
+
+            return midScore;
         }
 
 

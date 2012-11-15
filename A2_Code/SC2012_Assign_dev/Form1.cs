@@ -126,12 +126,14 @@ namespace SC2012_Assign
 
         public void drawVars()
         {
-            label2.Text = String.Format("Mutation Percent {0:00.00}", G.mutationPercent);
+            label2.Text = String.Format("Mutation {0:00.00}%", G.mutationPercent);
             label3.Text = String.Format("Mutations {0:D}", G.mutations);
             //label9.Text = String.Format("Duplicates {0:D}", G.dupNum);
             label10.Text = String.Format("Weaklings {0:D}", G.weaklingNum);
             label4.Text = String.Format("Generation {0:D}", G.generation);
             label5.Text = String.Format("Best Score {0:D}", G.bestScore);
+            label1.Text = String.Format("Mid Score {0:D}", G.midScore);
+            label9.Text = String.Format("Low Score {0:D}", G.lowScore);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -143,6 +145,7 @@ namespace SC2012_Assign
             G.pop.setupPop();
             G.pop.scorePop();
             G.pop.findHighestScore();
+            G.pop.findMidScore();
             G.pop.findLowestScore();
             drawHighScore();
             G.mutationPercent = double.Parse(textBox3.Text);
@@ -162,8 +165,7 @@ namespace SC2012_Assign
 
         public void run1Gen()
         {
-            int scoreDif = G.pop.findLowestScore() - G.pop.findHighestScore();
-            G.weaklingNum += G.pop.RemoveWeaklings( (G.pop.highScore - (-scoreDif / 2)) );
+            
 
             // assumes that population has been scored
             for (int i = 0; i < G.pop.numInPop / 2; i++)
@@ -180,9 +182,19 @@ namespace SC2012_Assign
 
             G.generation++;
             if (G.generation >= G.generations) G.run = false;
+
             G.pop.scorePop();
+
             G.pop.findHighestScore();
+            G.pop.findMidScore();
+            G.pop.findLowestScore();
+            
+            G.weaklingNum += G.pop.RemoveWeaklings();
+
             G.bestScore = G.pop.highScore;
+            G.midScore = G.pop.midScore;
+            G.lowScore = G.pop.lowScore;
+
             if (G.pop.pp[G.pop.highScoreIndex].foundEnd && G.stopWhenPathFound) G.run = false;
             drawHighScore();
             drawVars();
