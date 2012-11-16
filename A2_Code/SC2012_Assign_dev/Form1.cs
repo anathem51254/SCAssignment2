@@ -138,6 +138,8 @@ namespace SC2012_Assign
 
         private void button5_Click(object sender, EventArgs e)
         {
+            G.mutStrat = comboBox2.Text;
+            G.fitFunc = comboBox3.Text;
             G.genomeLen = int.Parse(genLenTxtBox.Text);
             G.rnd = new Random();
             createAndDrawMaze();
@@ -165,8 +167,6 @@ namespace SC2012_Assign
 
         public void run1Gen()
         {
-            
-
             // assumes that population has been scored
             for (int i = 0; i < G.pop.numInPop / 2; i++)
             {

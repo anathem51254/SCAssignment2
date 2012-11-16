@@ -48,9 +48,12 @@
             this.label10 = new System.Windows.Forms.Label();
             this.genLenTxtBox = new System.Windows.Forms.TextBox();
             this.genLenLbl = new System.Windows.Forms.Label();
-            this.InfoBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -103,7 +106,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(591, 25);
+            this.label4.Location = new System.Drawing.Point(557, 25);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 9;
@@ -182,7 +185,7 @@
             "Maze3",
             "Maze4",
             "Maze5"});
-            this.comboBox1.Location = new System.Drawing.Point(93, 43);
+            this.comboBox1.Location = new System.Drawing.Point(93, 41);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(74, 21);
             this.comboBox1.TabIndex = 16;
@@ -194,7 +197,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(57, 20);
             this.textBox3.TabIndex = 17;
-            this.textBox3.Text = "0.5";
+            this.textBox3.Text = "0.1";
             // 
             // label8
             // 
@@ -243,15 +246,6 @@
             this.genLenLbl.TabIndex = 25;
             this.genLenLbl.Text = "Genome Len";
             // 
-            // InfoBox
-            // 
-            this.InfoBox.Location = new System.Drawing.Point(677, 80);
-            this.InfoBox.Multiline = true;
-            this.InfoBox.Name = "InfoBox";
-            this.InfoBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.InfoBox.Size = new System.Drawing.Size(329, 409);
-            this.InfoBox.TabIndex = 26;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -270,14 +264,63 @@
             this.label9.TabIndex = 28;
             this.label9.Text = "label9";
             // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "MutStrat1",
+            "MutStrat2",
+            "MutStrat3",
+            "MutStrat1&2",
+            "All"});
+            this.comboBox2.Location = new System.Drawing.Point(281, 516);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(94, 21);
+            this.comboBox2.TabIndex = 29;
+            this.comboBox2.Text = "All";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(287, 500);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(47, 13);
+            this.label11.TabIndex = 30;
+            this.label11.Text = "MutStrat";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "FitFunc1",
+            "FitFunc2",
+            "FitFunc3"});
+            this.comboBox3.Location = new System.Drawing.Point(381, 516);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(94, 21);
+            this.comboBox3.TabIndex = 31;
+            this.comboBox3.Text = "FitFunc1";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(381, 500);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(84, 13);
+            this.label12.TabIndex = 32;
+            this.label12.Text = "Fitness Function";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1041, 547);
+            this.ClientSize = new System.Drawing.Size(669, 547);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.comboBox3);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.InfoBox);
             this.Controls.Add(this.genLenLbl);
             this.Controls.Add(this.genLenTxtBox);
             this.Controls.Add(this.label10);
@@ -329,9 +372,12 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox genLenTxtBox;
         private System.Windows.Forms.Label genLenLbl;
-        private System.Windows.Forms.TextBox InfoBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label label12;
     }
 }
 

@@ -27,6 +27,8 @@ namespace SC2012_Assign
         public static int bestScore;
         public static int midScore;
         public static int lowScore;
+        public static string mutStrat;
+        public static string fitFunc;
 
         public static bool run = false;
         public static bool stopWhenPathFound;
