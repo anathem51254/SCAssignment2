@@ -109,8 +109,21 @@ namespace SC2012_Assign
             if (G.mutStrat == "MutStrat1&2")
                 mutstrat = G.rnd.Next(1, 3);
 
-            if (G.mutStrat == "All")
+            if (G.mutStrat == "MutStrat1&3")
+            {
+                mutstrat = G.rnd.Next(1, 3);
+                if (mutstrat == 2)
+                    mutstrat = 3;
+            }
+
+            if (G.mutStrat == "MutStrat2&3")
+                mutstrat = G.rnd.Next(2, 3);
+
+            if (G.mutStrat == "MutStrat1&2&3")
                 mutstrat = G.rnd.Next(1, 4);
+
+            if (G.mutStrat == "All")
+                mutstrat = G.rnd.Next(1, 5);
 
             switch(mutstrat)
             {
@@ -167,7 +180,12 @@ namespace SC2012_Assign
         // swap gene order
         private void MutStart3()
         {
-            
+            for (int i = 0; i < G.genomeLen / 2; i++)
+            {
+                int temp = dna[i].gene;
+                dna[i].gene = dna[G.genomeLen - i - 1].gene;
+                dna[G.genomeLen - i - 1].gene = temp;
+            }
         }
 
         // select 1 point randomly and change the operation randomly - too random
@@ -207,7 +225,7 @@ namespace SC2012_Assign
         {
             PathInMaze p = new PathInMaze(m);
            
-            score = 5000;
+            score = 500;
 
             // manhattan dis calc on move & end point
             if (G.fitFunc == "FitFunc1")
@@ -247,71 +265,71 @@ namespace SC2012_Assign
 
 
                     int newmanhattanDisMov = calcDistance(p);
-                   
+
                     if (rc == PathInMaze.resSucessEnd)
                     {
                         foundEnd = true;
                         score = score * 50;
-                        //manhattanDisMov = newmanhattanDisMov;
+                        manhattanDisMov = newmanhattanDisMov;
                         break;
                     }
 
                     if (rc == PathInMaze.resFailOverPath)
                     {
-                        score = score - 50;
+                        score = score - 10;
 
                         if (newmanhattanDisMov < manhattanDisMov)
-                            score -= 10;
+                            score -= 1;
                         else if (newmanhattanDisMov > manhattanDisMov)
-                            score -= 20;
+                            score -= 2;
                         else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
-                            score -= 10;
-                        
+                            score -= 1;
+
                         manhattanDisMov = newmanhattanDisMov;
                         continue;
                     }
 
                     if (rc == PathInMaze.resSucess)
                     {
-                        score = score + 50;
+                        score = score + 2;
 
                         if (newmanhattanDisMov < manhattanDisMov)
-                            score += 50;
+                            score += 4;
                         else if (newmanhattanDisMov > manhattanDisMov)
-                            score -= 55;
-                        else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
                             score -= 5;
-                        
+                        else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
+                            score -= 1;
+
                         manhattanDisMov = newmanhattanDisMov;
                         continue;
                     }
 
                     if (rc == PathInMaze.resFailWall)
                     {
-                        score = score - 20;
+                        score = score - 10;
 
                         if (newmanhattanDisMov < manhattanDisMov)
-                            score -= 30;
+                            score -= 2;
                         else if (newmanhattanDisMov > manhattanDisMov)
-                            score -= 70;
+                            score -= 2;
                         else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
-                            score -= 70;
-                        
+                            score -= 5;
+
                         manhattanDisMov = newmanhattanDisMov;
                         continue;
                     }
 
                     if (rc == PathInMaze.resFailOut)
                     {
-                        score = score - 10;
+                        score = score - 2;
 
                         if (newmanhattanDisMov < manhattanDisMov)
-                            score -= 10;
+                            score -= 2;
                         else if (newmanhattanDisMov > manhattanDisMov)
-                            score -= 20;
+                            score -= 2;
                         else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
-                            score -= 20;
-                        
+                            score -= 1;
+
                         manhattanDisMov = newmanhattanDisMov;
                         continue;
                     }
@@ -328,7 +346,6 @@ namespace SC2012_Assign
 
                         manhattanDisMov = newmanhattanDisMov;
                         continue;
-                    }*/
                     #endregion
 
                     if (rc == PathInMaze.resInvalid)
@@ -338,23 +355,6 @@ namespace SC2012_Assign
                     }
                     firstrun = false;
                 }
-
-                int newmanhattanDisPoi = calcDistance(p);
-
-                if (newmanhattanDisPoi < manhattanDisPoi)
-                    score += 200;
-                else if (newmanhattanDisPoi > manhattanDisPoi)
-                    score -= 200;
-                else if (newmanhattanDisPoi == manhattanDisPoi && !firstrun2)
-                    score -= 50;
-
-                //System.Diagnostics.Debug.WriteLine("Prev: " + manhattanDisPoi.ToString() + "New: " + newmanhattanDisPoi.ToString() + "\n");
-
-                manhattanDisPoi = newmanhattanDisPoi;
-                firstrun2 = false;
-
-                #endregion
-            }
 
             // manhattan dis calc on end point
             if (G.fitFunc == "FitFunc2")
@@ -447,13 +447,11 @@ namespace SC2012_Assign
                 int newmanhattanDisPoi = calcDistance(p);
 
                 if (newmanhattanDisPoi < manhattanDisPoi)
-                {
-                    score += 1000;
-                }
+                    score += 30;
                 else if (newmanhattanDisPoi > manhattanDisPoi)
-                    score -= 500;
+                    score -= 30;
                 else if (newmanhattanDisPoi == manhattanDisPoi && !firstrun2)
-                    score -= 50;
+                    score -= 10;
 
                 //System.Diagnostics.Debug.WriteLine("Prev: " + manhattanDisPoi.ToString() + "\n Cur: " + newmanhattanDisPoi.ToString() + "\n");
                 
@@ -463,12 +461,13 @@ namespace SC2012_Assign
                 #endregion
             }
 
-            // manhattan dis calc on move
-            if (G.fitFunc == "FitFunc3")
+            // manhattan dis calc on end point
+            if (G.fitFunc == "FitFunc2")
             {
-                #region FitFunc3
+                #region FitFunc2
 
-                manhattanDisMov = calcDistance(p);
+                if (firstrun2)
+                    manhattanDisPoi = calcDistance(p);
 
                 int prevmi = 0;
 
@@ -496,75 +495,34 @@ namespace SC2012_Assign
                     // resFailOverPath = fail moved over previous path (but it did move)
                     // resInvalid = not a valid action - fail
 
-
-                    int newmanhattanDisMov = calcDistance(p);
-
-
                     if (rc == PathInMaze.resSucessEnd)
                     {
                         foundEnd = true;
                         score = score * 50;
-                        //manhattanDisMov = newmanhattanDisMov;
                         break;
                     }
 
                     if (rc == PathInMaze.resFailOverPath)
                     {
-                        score = score - 50;
-
-                        if (newmanhattanDisMov < manhattanDisMov)
-                            score += 20;
-                        else if (newmanhattanDisMov > manhattanDisMov)
-                            score -= 20;
-                        else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
-                            score -= 2;
-
-                        manhattanDisMov = newmanhattanDisMov;
+                        score = score - 5;
                         continue;
                     }
 
                     if (rc == PathInMaze.resSucess)
                     {
-                        score = score + 5;
-
-                        if (newmanhattanDisMov < manhattanDisMov)
-                            score += 20;
-                        else if (newmanhattanDisMov > manhattanDisMov)
-                            score -= 20;
-                        else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
-                            score -= 3;
-
-                        manhattanDisMov = newmanhattanDisMov;
+                        score = score + 2;
                         continue;
                     }
 
                     if (rc == PathInMaze.resFailWall)
                     {
-                        score = score - 10;
-
-                        if (newmanhattanDisMov < manhattanDisMov)
-                            score += 20;
-                        else if (newmanhattanDisMov > manhattanDisMov)
-                            score -= 20;
-                        else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
-                            score -= 2;
-
-                        manhattanDisMov = newmanhattanDisMov;
+                        score = score - 5;
                         continue;
                     }
 
                     if (rc == PathInMaze.resFailOut)
                     {
-                        score = score - 10;
-
-                        if (newmanhattanDisMov < manhattanDisMov)
-                            score += 20;
-                        else if (newmanhattanDisMov > manhattanDisMov)
-                            score -= 20;
-                        else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
-                            score -= 2;
-
-                        manhattanDisMov = newmanhattanDisMov;
+                        score = score - 2;
                         continue;
                     }
 
@@ -581,6 +539,157 @@ namespace SC2012_Assign
                         manhattanDisMov = newmanhattanDisMov;
                         continue;
                     }*/
+                    
+                 #endregion
+
+                 if (rc == PathInMaze.resInvalid)
+                 {
+                     System.Windows.Forms.MessageBox.Show("Invalid Movement");
+                     continue;
+                 }
+                    
+             }
+
+                int newmanhattanDisPoi = calcDistance(p);
+
+                if (newmanhattanDisPoi < manhattanDisPoi)
+                {
+
+
+
+                    score += 70;
+                }
+                else if (newmanhattanDisPoi > manhattanDisPoi)
+                    score -= 40;
+                else if (newmanhattanDisPoi == manhattanDisPoi && !firstrun2)
+                    score -= 15;
+
+             //System.Diagnostics.Debug.WriteLine("Prev: " + manhattanDisPoi.ToString() + "\n Cur: " + newmanhattanDisPoi.ToString() + "\n");
+
+             manhattanDisPoi = newmanhattanDisPoi;
+             firstrun2 = false;
+
+             #endregion
+            }
+
+            // manhattan dis calc on move
+            if (G.fitFunc == "FitFunc3")
+            {
+            #region FitFunc3
+
+             manhattanDisMov = calcDistance(p);
+
+             int prevmi = 0;
+
+             for (int i = 0; i < G.genomeLen; i++)
+             {
+                 int mi = dna[i].gene;
+                 prevmi = mi;
+                 // 0= Move Right(x+)
+                 // 1= Move Down(y+)
+                 // 2= Move Left(x+)
+                 // 3= Move Up(y-)
+                 // 4= move forward
+                 // 5= turn right
+                 // 6= turn left
+                 // 7= about face (turn right twice)
+
+                 //if (mi == -1) break; // perhaps use -1 to indicate at end
+                 int rc = p.movement(mi);
+
+                 // resSucessEnd = Success got to end
+                 // resSucessTurn  = move was successfull but did not move it was a turn command
+                 // resSucess = successfull and moved 1 square
+                 // resFailWall = fail hit a wall (did not move)
+                 // resFailOut = fail moved out of maze (did not move)
+                 // resFailOverPath = fail moved over previous path (but it did move)
+                 // resInvalid = not a valid action - fail
+
+
+                 int newmanhattanDisMov = calcDistance(p);
+
+
+                 if (rc == PathInMaze.resSucessEnd)
+                 {
+                     foundEnd = true;
+                     score = score * 50;
+                     //manhattanDisMov = newmanhattanDisMov;
+                     break;
+                 }
+
+                 if (rc == PathInMaze.resFailOverPath)
+                 {
+                     score = score - 50;
+
+                     if (newmanhattanDisMov < manhattanDisMov)
+                         score += 10;
+                     else if (newmanhattanDisMov > manhattanDisMov)
+                         score -= 20;
+                     else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
+                         score -= 10;
+
+                     manhattanDisMov = newmanhattanDisMov;
+                     continue;
+                 }
+
+                 if (rc == PathInMaze.resSucess)
+                 {
+                     score = score + 30;
+
+                     if (newmanhattanDisMov < manhattanDisMov)
+                         score += 50;
+                     else if (newmanhattanDisMov > manhattanDisMov)
+                         score -= 50;
+                     else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
+                         score -= 15;
+
+                     manhattanDisMov = newmanhattanDisMov;
+                     continue;
+                 }
+
+                 if (rc == PathInMaze.resFailWall)
+                 {
+                     score = score - 20;
+
+                     if (newmanhattanDisMov < manhattanDisMov)
+                         score += 5;
+                     else if (newmanhattanDisMov > manhattanDisMov)
+                         score -= 20;
+                     else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
+                         score -= 30;
+
+                     manhattanDisMov = newmanhattanDisMov;
+                     continue;
+                 }
+
+                 if (rc == PathInMaze.resFailOut)
+                 {
+                     score = score - 15;
+
+                     if (newmanhattanDisMov < manhattanDisMov)
+                         score -= 10;
+                     else if (newmanhattanDisMov > manhattanDisMov)
+                         score -= 20;
+                     else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
+                         score -= 15;
+
+                     manhattanDisMov = newmanhattanDisMov;
+                     continue;
+                 }
+
+                 #region not used
+                 /*if (rc == PathInMaze.resSucessTurn)
+                 {
+                     score = score + 3;
+
+                     if (newmanhattanDisMov < manhattanDisMov)
+                         score += 20;
+                     else if (newmanhattanDisMov > manhattanDisMov || newmanhattanDisMov == manhattanDisMov)
+                         score -= 20;
+
+                     manhattanDisMov = newmanhattanDisMov;
+                     continue;
+                 }*/
                     #endregion
 
                     if (rc == PathInMaze.resInvalid)
@@ -637,7 +746,7 @@ namespace SC2012_Assign
             int cnt = 0;
             for (int index = 0; index < numInPop; index++)
             {
-                if (pp[index].score < (midScore + (scoreDif / 4)) )
+                if (pp[index].score < (midScore + (scoreDif / 3)) )
                 {
                     //System.Diagnostics.Debug.WriteLine(pp[index].score.ToString());
                     pp[index].RandomGenome();

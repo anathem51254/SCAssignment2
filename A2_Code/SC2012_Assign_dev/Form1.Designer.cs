@@ -127,7 +127,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(57, 20);
             this.textBox1.TabIndex = 11;
-            this.textBox1.Text = "200";
+            this.textBox1.Text = "120";
             // 
             // button6
             // 
@@ -267,17 +267,21 @@
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.comboBox2.Items.AddRange(new object[] {
             "MutStrat1",
             "MutStrat2",
             "MutStrat3",
             "MutStrat1&2",
+            "MutStrat1&3",
+            "MutStrat2&3",
+            "MutStrat1&2&3",
             "All"});
             this.comboBox2.Location = new System.Drawing.Point(281, 516);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(94, 21);
             this.comboBox2.TabIndex = 29;
-            this.comboBox2.Text = "All";
+            this.comboBox2.Text = "MutStrat1&2";
             // 
             // label11
             // 
