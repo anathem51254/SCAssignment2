@@ -176,7 +176,6 @@ namespace SC2012_Assign
             }
         }
 
-
         // swap gene order
         private void MutStart3()
         {
@@ -237,12 +236,10 @@ namespace SC2012_Assign
 
                 manhattanDisMov = calcDistance(p);
 
-                int prevmi = 0;
-
                 for (int i = 0; i < G.genomeLen; i++)
                 {
                     int mi = dna[i].gene;
-                    prevmi = mi;
+
                     // 0= Move Right(x+)
                     // 1= Move Down(y+)
                     // 2= Move Left(x+)
@@ -276,7 +273,7 @@ namespace SC2012_Assign
 
                     if (rc == PathInMaze.resFailOverPath)
                     {
-                        score = score - 10;
+                        score = score - 5;
 
                         if (newmanhattanDisMov < manhattanDisMov)
                             score -= 1;
@@ -294,7 +291,7 @@ namespace SC2012_Assign
                         score = score + 2;
 
                         if (newmanhattanDisMov < manhattanDisMov)
-                            score += 4;
+                            score += 5;
                         else if (newmanhattanDisMov > manhattanDisMov)
                             score -= 5;
                         else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
@@ -306,7 +303,7 @@ namespace SC2012_Assign
 
                     if (rc == PathInMaze.resFailWall)
                     {
-                        score = score - 10;
+                        score = score - 5;
 
                         if (newmanhattanDisMov < manhattanDisMov)
                             score -= 2;
@@ -314,6 +311,9 @@ namespace SC2012_Assign
                             score -= 2;
                         else if (newmanhattanDisMov == manhattanDisMov && !firstrun)
                             score -= 5;
+
+                        if (i == 29)
+                            score -= 15;
 
                         manhattanDisMov = newmanhattanDisMov;
                         continue;
@@ -447,9 +447,20 @@ namespace SC2012_Assign
                 int newmanhattanDisPoi = calcDistance(p);
 
                 if (newmanhattanDisPoi < manhattanDisPoi)
-                    score += 30;
+                {
+                    int manhatdif = -newmanhattanDisPoi - -manhattanDisPoi;
+
+                    if (manhatdif > 4)
+                    {
+                        score += 100;
+                    }
+                    else
+                        score += 40;
+                }
                 else if (newmanhattanDisPoi > manhattanDisPoi)
-                    score -= 30;
+                {
+                    score -= 40;
+                }
                 else if (newmanhattanDisPoi == manhattanDisPoi && !firstrun2)
                     score -= 10;
 
@@ -510,13 +521,17 @@ namespace SC2012_Assign
 
                     if (rc == PathInMaze.resSucess)
                     {
-                        score = score + 2;
+                        score = score + 5;
                         continue;
                     }
 
                     if (rc == PathInMaze.resFailWall)
                     {
                         score = score - 5;
+
+                        if (i == 29)
+                            score -= 15;
+
                         continue;
                     }
 
@@ -554,10 +569,14 @@ namespace SC2012_Assign
 
                 if (newmanhattanDisPoi < manhattanDisPoi)
                 {
+                    int manhatdif = -newmanhattanDisPoi - -manhattanDisPoi;
 
-
-
-                    score += 70;
+                    if (manhatdif > 4)
+                    {
+                        score += 100;
+                    }
+                    else
+                        score += 40;
                 }
                 else if (newmanhattanDisPoi > manhattanDisPoi)
                     score -= 40;
